@@ -1,7 +1,5 @@
 # Hello Combine
 
----
-
 ### Asynchronous programming
 
 - Khi bạn thực hiện code của minh trên single-thread thì mọi việc rất đơn giản. Bạn nắm được tất cả các trạng thái và thứ tự thực thi của code. Nhưng với những những ngôn ngữ multi-threaded thì bất đồng bộ trong việc điều hướng UI Framework …
