@@ -81,11 +81,6 @@ example(of: "Subcriber") {
     center.post(name: myNotification, object: nil)
     center.post(name: myNotification, object: nil)
     center.post(name: myNotification, object: nil)
-    
-    //CANCEL
-    subscription.cancel()
-    
-    center.post(name: myNotification, object: nil) // không nhận được
 }
 /*
  Giải thích ví dụ trên:
@@ -136,4 +131,85 @@ example(of: "Just") {
      - nhận được 1 giá trị bình thường
      - nhận được 1 completion
  - có thể tạo nhiều subcribers để cùng lắng nghe tới 1 publisher
+ */
+
+/*
+ ASSIGN(TO:ON)
+ - Một cách khác để có subcriber
+ - Cho mình gán giá trị nhận được cho 1 property trong đối tượng (Obsever Property)
+ */
+
+example(of: "assign(to:on)") {
+    //1
+    class MyClass {
+        var name: String = "" {
+            didSet {
+                print(name)
+            }
+        }
+    }
+    
+    //2
+    let obj = MyClass()
+    
+    //3
+    let publisher = ["Apple", "iOS", "Combine"].publisher
+    
+    //4
+    _ = publisher
+        .assign(to: \.name, on: obj)
+}
+/*
+ Giải thích:
+ 1: Tạo 1 class & có 1 Obsever Property cho 1 property của nó
+ 2: Tạo đối tượng
+ 3: Tạo 1 Publisher từ 1 array String (publisher này phát ra các output là String)
+ 4: Subcribe cho publisher theo `assign(to:on)`
+     - to : tới thuộc tính nào của đối tượng
+     - on : cho đối tượng nào
+ */
+
+
+/// CANCELLABLE
+/*
+ - Được dùng khi 1 subcriber trong một thời gian dài mà không nhận được dữ liệu từ publisher thì tốt nhất là huỹ nó đi.
+ - 1 Subcription trả về 1 `canncellation token` thì cho phép huỹ đăng kí với publisher
+ - gọi hàm `cancel()`
+ - nếu bạn không sử dụng `cancel()` thì subcriber vẫn có thể huỹ nếu nhận được `completion` hoặc `error`
+ */
+
+example(of: "Cancellation") {
+    let myNotification = Notification.Name("fxNotification")
+    
+    let publisher = NotificationCenter.default.publisher(for: myNotification, object: nil)
+    
+    let center = NotificationCenter.default
+    
+    //SINK
+    let subscription = publisher.sink { _ in
+        print("FxNotification received from a publisher!")
+    }
+    
+    //POST
+    center.post(name: myNotification, object: nil)
+    center.post(name: myNotification, object: nil)
+    center.post(name: myNotification, object: nil)
+    
+    //CANCEL
+    subscription.cancel()
+    
+    center.post(name: myNotification, object: nil) // không nhận được
+}
+
+/*
+     TỔNG HỢP LẠI CHÚT
+ 
+ [PUBLISHER]                   [SUBSCRIBER]
+      | <------- subscribes -------- |
+      | ---- gives subscription ---- |
+      | <----- requests values ----- |
+      | ------- send values -------> |
+      | ----- send completion -----> |
+      |                              |
+      V                              V
  */
