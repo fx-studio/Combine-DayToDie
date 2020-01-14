@@ -206,7 +206,7 @@ example(of: "Cancellation") {
  
  [PUBLISHER]                   [SUBSCRIBER]
       | <------- subscribes -------- |
-      | ---- gives subscription ---- |
+      | ---- gives subscription ---> |
       | <----- requests values ----- |
       | ------- send values -------> |
       | ----- send completion -----> |
