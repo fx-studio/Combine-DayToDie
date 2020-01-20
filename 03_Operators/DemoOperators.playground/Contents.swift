@@ -82,3 +82,22 @@ example(of: "flatMap") {
     //7 : Tèo sợ
     teo.message.value = "TÈO: Toang rồi."
 }
+
+example(of: "replaceNil") {
+    ["A",  nil, "B"].publisher
+        .replaceNil(with: "-")
+        .map({$0!})
+        .sink { print($0) }
+        .store(in: &subscriptions)
+}
+
+example(of: "replaceEmpty(with:)") {
+    // 1
+    let empty = Empty<Int, Never>()
+    // 2
+    empty
+        .replaceEmpty(with: 1)
+        .sink(receiveCompletion: { print($0) },
+              receiveValue: { print($0) })
+        .store(in: &subscriptions)
+}

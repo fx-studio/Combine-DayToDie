@@ -175,7 +175,7 @@ Giải thích:
 
 OKE, rất khoẻ phải không nào. Giờ thì yêu Combine cmnr!
 
-#### `flatMap`
+##### `flatMap`
 
 Trước tiên thì ta cần hệ thống lại một chú về em `map` và em `flatMap`
 
@@ -260,10 +260,47 @@ Cuối câu chuyện bạn cũng thấy là `THUỶ ĐẬU` đã join vào. Vì 
 
 OKE, em nó đã bị cấm cửa. Nếu không có giá trị `max` thì nó tương đường với `unlimited`.
 
-Tạm kết cho `MAP`
+##### Tạm kết cho `MAP`
 
 * `map` dùng để biến đối giá trị này thành giá trị khác (kiểu giá trị)
 * Map key paths : dùng để biến đổi các thuộc tính của 1 đối tượng, thành cái gì đó mới hoặc cho vui cũng được
 * `tryMap` dùng để biến đổi như map, nhưng sử dụng vào với các kiểu dữ liệu có nguy cơ sinh ra lỗi. Auto chúng sẽ vào `completion`
 * `flatMap` dùng để biến đổi 1 publisher này thành 1 publisher khác. Bên cạnh đó còn quản lí các stream của các publisher trong đó. Hiểu nôm na là hợp nhất các stream thành 1 steam và khống chế số lượng các steam lắng nghe.
+
+#### 1.4. Replacing upstream output
+
+Cái này nghe cái tên thì cũng đoán ra được ít nhiều phần nào rồi. Đôi khi một số kiểu dữ liệu cho phép việc vắng mặt giá trị (Optional) hoặc khi giá trị là `nil`. Combine cung cấp cho chúng ta các toán tử để thay thế như sau
+
+##### `replaceNil(with:)`
+
+```swift
+["A",  nil, "B"].publisher
+        .replaceNil(with: "-")
+        .sink { print($0) }
+        .store(in: &subscriptions)
+```
+
+Đơn giản là publisher phát ra giá trị nào nil thì sẽ thay thế bằng giá trị nào đó được chỉ định. Tuy nhiên chúng sẽ là kiểu Optional và muốn code sạch đẹp hơn thì bạn phải khử Optional đó. Ví dụ:
+
+```swift
+["A",  nil, "B"].publisher
+        .replaceNil(with: "-")
+        .map({$0!})
+        .sink { print($0) }
+        .store(in: &subscriptions)
+```
+
+##### `replaceEmpty(with:)`
+
+Khi mà publisher không chịu phát gì hết thì sao? Khi đó toán tử `replaceEmpty` sẽ chèn thêm giá trị nếu pulisher không phát đi bất cứ gì mà lại complete.
+
+```swift
+let empty = Empty<Int, Never>()
+    // 2
+    empty
+        .replaceEmpty(with: 1)
+        .sink(receiveCompletion: { print($0) },
+              receiveValue: { print($0) })
+        .store(in: &subscriptions)
+```
 
