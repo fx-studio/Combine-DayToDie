@@ -6,8 +6,8 @@ Kết thúc phần này là 1 project luyện tập. Mục tiêu lớn là phả
 
 ### Nội dung:
 
-* Phần 01 : [Transforming Operators](./Transforming.md)
-* Phần 02 : Filtering Operators
+* Phần 01 : [Transforming Operators](./01_Transforming.md)
+* Phần 02 : [Filtering Operators](./02_Filtering.md)
 * Phần 03 : Combining Operators
 * Phần 04 : Time Manipulation Operators
 * Phần 05 : Sequence Operators
