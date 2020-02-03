@@ -101,3 +101,12 @@ example(of: "replaceEmpty(with:)") {
               receiveValue: { print($0) })
         .store(in: &subscriptions)
 }
+
+example(of: "scan") {
+    let pub = (0...5).publisher
+    
+    pub
+        .scan(0) { $0 + $1 }
+        .sink { print ("\($0)", terminator: "-->") }
+        .store(in: &subscriptions)
+}
