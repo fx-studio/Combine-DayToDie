@@ -1,4 +1,4 @@
-# Combine-DayToDie
+# Combine - DayToDie
 
 > ## "Today is a good day to die."
 
@@ -10,7 +10,7 @@ Combine là hàng chính chủ nên sẽ có những ưu thế nhiều hơn. Ngo
 
 Về repo này đơn giản chỉ là những gì note lại trong quá trình tự mày mò Combine.
 
-### Lưu ý:
+### Lưu ý
 
 > Repo này chỉ mang tính chất cá nhân tự research. Không có ý nghĩa gì về mặt nghiên cứu hay học thuật. Và bạn tuỳ ý sử dụng với mọi mục đích phi thương mại và học tập.
 
@@ -22,6 +22,15 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 - Combo cuối `SwiftUI` + `Combine`
 
 > Mục tiêu cuối là series bài viết Combine trên blog của mình. Nếu bạn hứng thú thì có thể ghé [Fx Studio](fxstudio.dev)
+
+### Danh sách
+
+1. [Hello Combine](./01_HelloCombine)
+2. [Publisher & Subscriber](./02_Publishers_Subscribers)
+3. [Operators](./03_Operators)
+4. [Combine vs. UIKit](./04_Combine_UIKit)
+
+### [Practices](./Practices)
 
 ---
 
