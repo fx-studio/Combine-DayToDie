@@ -11,4 +11,6 @@ Kết thúc phần này là 1 project luyện tập. Mục tiêu lớn là phả
 * Phần 03 : [Combining Operators](./03_Combining.md)
 * Phần 04 : [Time Manipulation Operators](./04_TimeManipulation.md)
 * Phần 05 : [Sequence Operators](./05_Sequence.md)
-* Phần 06 : Tích hợp với UIKit
+
+---
+> Các toán tử tìm hiểu được thêm trong quá trình ngâm cứu sẽ được bổ sung trong phần này.
