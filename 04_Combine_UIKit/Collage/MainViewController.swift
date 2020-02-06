@@ -27,11 +27,12 @@
 /// THE SOFTWARE.
 
 import UIKit
+import Combine
 
 class MainViewController: UIViewController {
   
   // MARK: - Outlets
-
+  
   @IBOutlet weak var imagePreview: UIImageView! {
     didSet {
       imagePreview.layer.borderColor = UIColor.gray.cgColor
@@ -40,16 +41,38 @@ class MainViewController: UIViewController {
   @IBOutlet weak var buttonClear: UIButton!
   @IBOutlet weak var buttonSave: UIButton!
   @IBOutlet weak var itemAdd: UIBarButtonItem!
-
-  // MARK: - Private properties
   
-
+  // MARK: - Private properties
+  private var subscriptions = Set<AnyCancellable>()
+  // đây là biến tạo ra để `store` tất cả các subscription. Và khi vòng đời của 1 VC kết thúc thì tất cả chúng nó sẽ bị huỹ --> Khỏi lo lắng vấn đề bộ nhớ.
+  
+  private let images = CurrentValueSubject<[UIImage], Never>([])
+  // Dùng để gởi đi 1 image tới UI Control. Và nếu bạn thường xuyên thực hiện công việc này trong VC thì lời khuyên cho bạn nên sử dụng CurrentValueSubject, vì:
+  // - Đảm bảo được luôn có 1 giá trị nhận được khi có 1 subscriber subscribe tới nó
+  // - Không fail, không cancel
+  
+  
+  
   // MARK: - View controller
   
   override func viewDidLoad() {
     super.viewDidLoad()
     let collageSize = imagePreview.frame.size
     
+    // Bắt đầu subscription nào
+    images
+      .handleEvents(receiveOutput: { [weak self] photos in
+        self?.updateUI(photos: photos)
+      })
+      // Biến đổi Input của subject là Array[UIImage] thành UIImage
+      .map { photos in
+        // Đây là extention bọn nó viết giúp việc tạo ra 1 cái ảnh mới từ các ảnh trong array
+        UIImage.collage(images: photos, size: collageSize)
+      }
+      // Sử dụng ASSIGN để subscriber tới thuộc tính image của đối tượng `imagePreview`
+      .assign(to: \.image, on: imagePreview)
+      //lưu trữ subscription --> để auto huỹ
+      .store(in: &subscriptions)
   }
   
   private func updateUI(photos: [UIImage]) {
@@ -62,7 +85,8 @@ class MainViewController: UIViewController {
   // MARK: - Actions
   
   @IBAction func actionClear() {
-    
+    images.send([])
+    // reset toàn bộ ảnh thì chỉ cần dùng subject send đi 1 array rỗng
   }
   
   @IBAction func actionSave() {
@@ -71,7 +95,11 @@ class MainViewController: UIViewController {
   }
   
   @IBAction func actionAdd() {
+    let newImages = images.value + [UIImage(named: "IMG_1907.jpg")!]
+    // Sẽ lấy array image từ subject và công thêm 1 image mới
     
+    images.send(newImages)
+    // Subject sẽ send cả array image đó đi
   }
   
   private func showMessage(_ title: String, description: String? = nil) {
