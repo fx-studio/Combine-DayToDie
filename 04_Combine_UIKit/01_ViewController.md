@@ -47,7 +47,7 @@ Bạn sẽ sử dụng nó khi nào:
 Lựa chọn ở đây thì bạn sẽ phải chọn kiểu của Publisher thuộc 1 trong 2 kiểu sau:
 
 * **CurrentValueSubject**
-  * u điểm của nó khi có subscription tới thì subscriber sẽ có ngay dữ liệu liền
+  * Ưu điểm của nó khi có subscription tới thì subscriber sẽ có ngay dữ liệu liền
   * Hiệu quả khi lưu trữ dữ liệu
   * cần cung cấp giá trị của Input ban đầu khi khai báo subject này
 * **PassthroughSubject**
