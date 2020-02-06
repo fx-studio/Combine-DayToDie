@@ -10,5 +10,5 @@ Kết thúc phần này là 1 project luyện tập. Mục tiêu lớn là phả
 * Phần 02 : [Filtering Operators](./02_Filtering.md)
 * Phần 03 : [Combining Operators](./03_Combining.md)
 * Phần 04 : [Time Manipulation Operators](./04_TimeManipulation.md)
-* Phần 05 : Sequence Operators
+* Phần 05 : [Sequence Operators](./05_Sequence.md)
 * Phần 06 : Tích hợp với UIKit
