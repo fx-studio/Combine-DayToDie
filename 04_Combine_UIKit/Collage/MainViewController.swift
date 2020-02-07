@@ -92,14 +92,53 @@ class MainViewController: UIViewController {
   @IBAction func actionSave() {
     guard let image = imagePreview.image else { return }
     
+    PhotoWriter.save(image)
+      .sink(receiveCompletion: { [unowned self] completion in
+        if case .failure(let error) = completion {
+          //self.showMessage("Error", description: error.localizedDescription)
+          
+          self.alert(title: "Error", text: error.localizedDescription)
+            .sink { _ in
+              // tự sướng trong này
+          }
+          .store(in: &self.subscriptions)
+          
+        }
+        
+        self.actionClear()
+        
+      }) { [unowned self] id in
+        //self.showMessage("Saved with id: \(id)")
+        
+        self.alert(title: "Error", text: "").sink { _ in
+          // tự sướng trong này
+        }.store(in: &self.subscriptions)
+      }
+      .store(in: &subscriptions)
+    
   }
   
   @IBAction func actionAdd() {
-    let newImages = images.value + [UIImage(named: "IMG_1907.jpg")!]
+    //let newImages = images.value + [UIImage(named: "IMG_1907.jpg")!]
     // Sẽ lấy array image từ subject và công thêm 1 image mới
     
-    images.send(newImages)
+    //images.send(newImages)
     // Subject sẽ send cả array image đó đi
+    
+    ///////
+    let photos = storyboard!.instantiateViewController( withIdentifier: "PhotosViewController") as!
+    PhotosViewController
+    
+    let newPhotos = photos.selectedPhotos
+    
+    newPhotos
+      .map { [unowned self] newImage in
+        return self.images.value + [newImage]
+    }
+    .assign(to: \.value, on: images)
+    .store(in: &subscriptions)
+    
+    navigationController!.pushViewController(photos, animated: true)
   }
   
   private func showMessage(_ title: String, description: String? = nil) {

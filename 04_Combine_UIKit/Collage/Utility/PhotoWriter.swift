@@ -38,4 +38,27 @@ class PhotoWriter {
     case generic(Swift.Error)
   }
   
+  static func save(_ image: UIImage) -> Future<String, PhotoWriter.Error> {
+    return Future { resolve in
+      do {
+        // tạo request để lưu ảnh
+        try PHPhotoLibrary.shared().performChangesAndWait {
+          // tạo và định danh cho request
+          let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+          
+          guard let savedAssetID = request.placeholderForCreatedAsset?.localIdentifier else {
+            // trường hợp bị lỗi
+            return resolve(.failure(.couldNotSavePhoto))
+          }
+          
+          // trường hợp thành công -> Future trả về Output
+          resolve(.success(savedAssetID))
+        }
+      } catch {
+        // thất bại với lỗi chung chung
+        resolve(.failure(.generic(error)))
+      }
+    }
+  }
+  
 }
