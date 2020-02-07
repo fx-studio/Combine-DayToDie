@@ -138,6 +138,9 @@ func gotoB() {
   
   let photos = vc.selectedPhotos
   
+  // publisher
+  let newPhotos = photos.selectedPhotos
+  
   newPhotos
     .map { 
       // Biến đổi thành dữ liệu mong muốn
@@ -173,6 +176,9 @@ func gotoB() {
 	let vc = B()
   
   let photos = vc.selectedPhotos
+  
+  // publisher
+  let newPhotos = photos.selectedPhotos.share()
   
   // subscription #1
   newPhotos
@@ -265,7 +271,10 @@ Vậy là xong ở class B, khá đơn giản phải không nào. Tiếp tục c
 func gotoB() {
 	let vc = B()
   
-  let photos = vc.selectedPhotos
+  let photos = vc.selectedPhotos.share()
+  
+  // publisher
+  let newPhotos = photos.selectedPhotos.share()
   
   // subscription #1
   newPhotos

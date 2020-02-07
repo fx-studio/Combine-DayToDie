@@ -129,8 +129,20 @@ class MainViewController: UIViewController {
     let photos = storyboard!.instantiateViewController( withIdentifier: "PhotosViewController") as!
     PhotosViewController
     
-    let newPhotos = photos.selectedPhotos
+    // Title
+    photos.$selectedPhotosCount
+      .filter { $0 > 0 }
+      .map { "Selected \($0) photos" }
+      .assign(to: \.title, on: self)
+      .store(in: &subscriptions)
     
+    // publisher
+    let newPhotos = photos.selectedPhotos
+      .prefix(while: { [unowned self] _ in
+        return self.images.value.count < 6
+    }) .share()
+    
+    // emit images
     newPhotos
       .map { [unowned self] newImage in
         return self.images.value + [newImage]
@@ -138,10 +150,13 @@ class MainViewController: UIViewController {
     .assign(to: \.value, on: images)
     .store(in: &subscriptions)
     
-    photos.$selectedPhotosCount
-      .filter { $0 > 0 }
-      .map { "Selected \($0) photos" }
-      .assign(to: \.title, on: self)
+    // update UI
+    newPhotos
+      .ignoreOutput()
+      .delay(for: 2.0, scheduler: DispatchQueue.main)
+      .sink(receiveCompletion: { [unowned self] _ in
+        self.updateUI(photos: self.images.value)
+      }) { _ in }
       .store(in: &subscriptions)
     
     navigationController!.pushViewController(photos, animated: true)
