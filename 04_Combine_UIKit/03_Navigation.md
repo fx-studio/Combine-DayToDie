@@ -200,3 +200,96 @@ let newPhotos = photos.selectedPhotos.share()
 
 Toán tử `share()` có đề cập trong phần operator. Khi đó thì nhiều subscription tới cùng 1 publisher và cũng cùng trỏ tới publisher gốc. Giúp publisher gốc  khi `emit` dữ liệu cho nhiều subscriber thì dữ liệu được giở đi an toàn hơn.
 
+### 3.4. binding
+
+Các phần trên chúng ta đã tìm hiểu về `call back`. Phần này sẽ là `binding`. Dành cho bạn nào chưa hiểu lắm thì cứ hiểu đơn giản như sau:
+
+> Binding là việc ràng buộc 2 đối tượng tượng với nhau. Khi dữ liệu của đối tượng này thay đổi thì đối tượng kia cũng sẽ thay đổi theo.
+
+#### `@Published`
+
+Thật là không sai khi nó Apple đã có âm mưu ngay từ đầu. Thật là tinh tế khai đã gài và cài cắm Combine code và trong các framework truyền thống. Mà quan trọng là nó không thay đổi gì nhiều code cũ.
+
+Có 2 từ khoá mới:
+
+* `@Published`
+* `@ObservedObject`
+
+Đã được khai sinh ra vào bạn có thể dùng trong bất class/struct/enum nào cũng được. Trong phần này chúng ta chỉ tìm hiểu về `@Published` thôi. Vậy nó là gì?
+
+* Cách đơn giản nhất và nhanh nhất để bạn tạo ra 1 property là publisher
+* Không ảnh hưởng gì tới code của class chứa nó, chỉ khai báo thêm từ khoá `@Publisher` phía trước
+* Với Input là cùng kiểu dữ liệu với property đó. Và không bao giờ có lỗi.
+* Vừa lưu trữ đc giá trị và phát đi được giá trị
+* Real-time, bất cứ khi nào bạn thay đổi giá trị thì đồng thời nó sẽ phát đi giá trị đó cho các subscriber
+* `private` hay `public` để được
+* Phải yêu cầu có giá trị lúc khai báo
+
+Ví dụ cú pháp khai báo:
+
+```swift
+struct Person {
+  @Published var age: Int = 0
+}
+```
+
+Sử dụng thì 
+
+```swift
+var person = Person()
+
+person.$age
+	.sink { ... }
+	.store(...)
+```
+
+Thêm toán tử dấu `$` để truy cập tới nó.
+
+#### Áp dụng vào cái ví dụ trên
+
+Ở class B,  khai báo thêm 1 property để đếm số ảnh đc chọn
+
+```swift
+@Published var selectedPhotosCount = 0
+```
+
+Tại mỗi lúc thêm một ảnh thì ta sẽ tăng giá trị của biến lên
+
+```swift
+self.selectedPhotosCount += 1
+```
+
+Vậy là xong ở class B, khá đơn giản phải không nào. Tiếp tục chuyển sang class A, tại cái hàm huyền thoại kia
+
+```swift
+func gotoB() {
+	let vc = B()
+  
+  let photos = vc.selectedPhotos
+  
+  // subscription #1
+  newPhotos
+    .map { ... }
+    .assign(to: , on: )
+    .store(in: &subscriptions)
+  
+  // subscription #2
+  newPhotos
+    .filter { ... }
+    .assign(to: , on: )
+    .store(in: &subscriptions)
+  
+  // binding selectedPhotosCount
+  photos.$selectedPhotosCount
+      .filter { $0 > 0 }
+      .map { "Selected \($0) photos" }
+      .assign(to: \.title, on: self)
+      .store(in: &subscriptions)
+	
+	self.navigationController?.pushViewController(vc, animated: true)
+}
+```
+
+Bạn thêm đoạn code để subscribe tới `selectedPhotosCount`. Trước tiên thì phải qua `filter` sau đó là `map`. Cuối cùng là `assign`  vào thuộc tính `title` của View Controller.
+
+Như vậy mỗi lần bạn chọn ảnh ở bên class B, thì title của class tự động thay đổi theo. OKE, DONE!

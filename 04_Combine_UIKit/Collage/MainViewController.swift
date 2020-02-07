@@ -138,6 +138,12 @@ class MainViewController: UIViewController {
     .assign(to: \.value, on: images)
     .store(in: &subscriptions)
     
+    photos.$selectedPhotosCount
+      .filter { $0 > 0 }
+      .map { "Selected \($0) photos" }
+      .assign(to: \.title, on: self)
+      .store(in: &subscriptions)
+    
     navigationController!.pushViewController(photos, animated: true)
   }
   
