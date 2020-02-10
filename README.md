@@ -31,6 +31,7 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 4. [Combine vs. UIKit](./04_Combine_UIKit)
 5. [Networking](./05_Networking)
 6. [Debugging](./06_Debugging)
+7. [Timer](./07_Timer)
 
 ### [Practices](./Practices)
 
