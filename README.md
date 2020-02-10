@@ -30,6 +30,7 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 3. [Operators](./03_Operators)
 4. [Combine vs. UIKit](./04_Combine_UIKit)
 5. [Networking](./05_Networking)
+6. [Debugging](./06_Debugging)
 
 ### [Practices](./Practices)
 
