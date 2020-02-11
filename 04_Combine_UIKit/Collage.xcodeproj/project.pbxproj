@@ -19,6 +19,8 @@
 		9C4A011922DE6A1E00F8732E /* UIViewController+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A011822DE6A1E00F8732E /* UIViewController+Combine.swift */; };
 		9C4A011B22DF004300F8732E /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A011A22DF004300F8732E /* PhotosViewController.swift */; };
 		9C4A011D22DF00F800F8732E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A011C22DF00F800F8732E /* PhotoCell.swift */; };
+		9E6A966123F2A4DE004CE828 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6A966023F2A4DE004CE828 /* MusicViewController.swift */; };
+		9E6A966423F2A96C004CE828 /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6A966323F2A96C004CE828 /* Music.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		9C4A011822DE6A1E00F8732E /* UIViewController+Combine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Combine.swift"; sourceTree = "<group>"; };
 		9C4A011A22DF004300F8732E /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		9C4A011C22DF00F800F8732E /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		9E6A966023F2A4DE004CE828 /* MusicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MusicViewController.swift; path = Collage/MusicViewController.swift; sourceTree = SOURCE_ROOT; };
+		9E6A966323F2A96C004CE828 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,7 @@
 				9C055EBF22DDD50A00EB2066 /* Utility */,
 				9C055EAF22DDD50300EB2066 /* MainViewController.swift */,
 				9C4A011A22DF004300F8732E /* PhotosViewController.swift */,
+				9E6A966023F2A4DE004CE828 /* MusicViewController.swift */,
 				9C4A011C22DF00F800F8732E /* PhotoCell.swift */,
 				9C055EB922DDD50400EB2066 /* Info.plist */,
 			);
@@ -86,6 +91,7 @@
 				9C055EC222DDD52B00EB2066 /* PhotoWriter.swift */,
 				9C055EC422DDD81900EB2066 /* PHPhotoLibrary+Combine.swift */,
 				9C4A011822DE6A1E00F8732E /* UIViewController+Combine.swift */,
+				9E6A966323F2A96C004CE828 /* Music.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -186,6 +192,8 @@
 				9C055EB022DDD50300EB2066 /* MainViewController.swift in Sources */,
 				9C055EAC22DDD50300EB2066 /* AppDelegate.swift in Sources */,
 				9C055EAE22DDD50300EB2066 /* SceneDelegate.swift in Sources */,
+				9E6A966123F2A4DE004CE828 /* MusicViewController.swift in Sources */,
+				9E6A966423F2A96C004CE828 /* Music.swift in Sources */,
 				9C055EC522DDD81900EB2066 /* PHPhotoLibrary+Combine.swift in Sources */,
 				9C055EC122DDD51A00EB2066 /* UIImage+Collage.swift in Sources */,
 				9C4A011922DE6A1E00F8732E /* UIViewController+Combine.swift in Sources */,
