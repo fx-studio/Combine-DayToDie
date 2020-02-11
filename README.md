@@ -32,6 +32,7 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 5. [Networking](./05_Networking)
 6. [Debugging](./06_Debugging)
 7. [Timer](./07_Timer)
+8. [KVO](./08_KVO)
 
 ### [Practices](./Practices)
 
