@@ -33,6 +33,7 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 6. [Debugging](./06_Debugging)
 7. [Timer](./07_Timer)
 8. [KVO](./08_KVO)
+9. [Resource Management](./09_Resource_Management)
 
 ### [Practices](./Practices)
 
