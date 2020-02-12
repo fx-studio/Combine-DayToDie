@@ -34,7 +34,7 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 7. [Timer](./07_Timer)
 8. [KVO](./08_KVO)
 9. [Resource Management](./09_Resource_Management)
-10. [Combine vs. SwiftUI](,/10_Combine_SwiftUI)
+10. [Combine vs. SwiftUI](./10_Combine_SwiftUI)
 
 ### [Practices](./Practices)
 
