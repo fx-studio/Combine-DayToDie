@@ -35,6 +35,7 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 8. [KVO](./08_KVO)
 9. [Resource Management](./09_Resource_Management)
 10. [Combine vs. SwiftUI](./10_Combine_SwiftUI)
+11. [Error Handling](./11_Error_Handling)
 
 ### [Practices](./Practices)
 
