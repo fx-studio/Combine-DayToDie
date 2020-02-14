@@ -343,3 +343,73 @@ let api = DadJokes()
 ```
 
 Hoán vị 2 cái `jokeID` và `badJokeID` để xem kết quả.
+
+## 11.4. retrying & catching
+
+Giờ tới lúc xử lý tổng hợp rồi. Nếu như tương tác với API của bạn thật bại. Nhưng bạn vẫn muốn cố gắng níu kéo thêm vài lần nữa. Và thực hiện việc `call request` thì toán tử `retry`  sẽ giúp bạn.
+
+Chúng ta theo dõi đoạn code sau, giả sử có 1 lớp `PhotoService`
+
+```swift
+let photoService = PhotoService()
+
+photoService
+    .fetchPhoto(quality: .high)
+    .handleEvents(
+      receiveSubscription: { _ in print("Trying ...") },
+      receiveCompletion: {
+        guard case .failure(let error) = $0 else { return }
+        print("Got error: \(error)")
+      }
+    )
+    .retry(3)
+    .catch { error -> PhotoService.Publisher in
+      print("Failed fetching high quality, falling back to low quality")
+      return photoService.fetchPhoto(quality: .low)
+    }
+    .replaceError(with: UIImage(named: "na.jpg")!)
+    .sink(
+      receiveCompletion: { print("\($0)") },
+      receiveValue: { image in
+        image
+        print("Got image: \(image)")
+      }
+    )
+    .store(in: &subscriptions)
+```
+
+Function `fetchPhoto(quality: .high)` của nó sẽ cho phép mình custom với chất lượng bức ảnh. Với chất lượng cao thì sẽ failed. Khi đó sẽ tiến hành:
+
+* `handleEvents` -> `receiveCompletion` = `failur`e : để thông báo người dùng biết
+* `.retry(3)` thử lại 3 lần
+
+Nếu như cả 3 lần thất bại với chất lượng cao, thì chốt chặn tiếp theo là `catch` error và tiến hành thử lại với chất lượng thấp.
+
+Nếu như tới cả chất lượng thất mà thất bại tiếp nữa thì chốt chặn cuối cùng là `replaceError` với 1 cái ảnh mặc định. Điều này có ý nghĩa trong ngữ cảnh UI, vì giao diện người dùng không thể fail hay ko hiển thị gì hết. Nên đối với bạn thì phải tuỳ thuộc vào yêu cầu bài toán để xử lý cho đẹp.
+
+> OKE, đó là các bước cơ bản để xử lý Error.
+
+## Tóm tắt
+
+* `Never` kiểu của Failure để publisher không bao giờ thất bại
+* Các toán tử thay đổi thuộc tính
+  * `setFailureType` thêm type cho Failure, khi muốn biến thanh niên nào Never thì ko Never
+  * `assertNoFailure` khẳng định ko có lỗi, dành cho các thanh niên publisher có khai bái từ trước.
+* Kiểu subscribe
+  * `sink` dành cho có Failure
+  * `assign` dành cho Never
+* Với các loại toán tử có từ khoá đầu tiên là `try` thì phải cố gắng ném ra `throw`  error
+* Các error mà ko đc `throw` ra thì cho về loại chung chung `Swift.Error`. Thường sẽ phát sinh ra khi dùng toán tử `try`
+* `mapError` dùng để xử lý error phát sinh
+  * Biến đổi về kiểu Error mà mình định nghĩa
+  * Log ra hoặc ép kiểu về Error của mình
+  * Có thể gọi lại một số function khác để xử lý thêm
+* Nên define type Error riêng để bọc luôn các lỗi của publisher, hệ thống ...
+* `retry(:)` để subscribe lại khi nhận đc failure của publisher
+* `replaceError(with:)` để là chốt chặn cuối cùng, khi muốn thay thể error bằng giá trị mặc định nào đó
+* `catch` để bắt error và bẻ lái sang hướng khác
+
+---
+
+## HẾT
+

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import UIKit
 
 var subscriptions = Set<AnyCancellable>()
 
@@ -192,13 +193,41 @@ example(of: "Joker API") {
   }
   
   //API
-  let api = DadJokes()
-  let jokeID = "9prWnjyImyd"
-  let badJokeID = "123456"
-  // 5
-  api
-    .getJoke(id: jokeID)
-    .sink(receiveCompletion: { print($0) },
-          receiveValue: { print("Got joke: \($0)") })
-    .store(in: &subscriptions)
+//  let api = DadJokes()
+//  let jokeID = "9prWnjyImyd"
+//  let badJokeID = "123456"
+//  // 5
+//  api
+//    .getJoke(id: jokeID)
+//    .sink(receiveCompletion: { print($0) },
+//          receiveValue: { print("Got joke: \($0)") })
+//    .store(in: &subscriptions)
+}
+
+let photoService = PhotoService()
+
+example(of: "retry") {
+  photoService
+    .fetchPhoto(quality: .low)
+  .handleEvents(
+    receiveSubscription: { _ in print("Trying ...") },
+    receiveCompletion: {
+      guard case .failure(let error) = $0 else { return }
+      print("Got error: \(error)")
+    }
+  )
+  .retry(3)
+  .catch { error -> PhotoService.Publisher in
+    print("Failed fetching high quality, falling back to low quality")
+    return photoService.fetchPhoto(quality: .low)
+  }
+  //.replaceError(with: UIImage(named: "na.jpg")!)
+  .sink(
+    receiveCompletion: { print("\($0)") },
+    receiveValue: { image in
+      image
+      print("Got image: \(image)")
+    }
+  )
+  .store(in: &subscriptions)
 }
