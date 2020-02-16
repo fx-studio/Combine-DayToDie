@@ -2,7 +2,29 @@ import Combine
 import SwiftUI
 import PlaygroundSupport
 
-<# Add code here #>
+let source = Timer
+  .publish(every: 1.0, on: .main, in: .common)
+  .autoconnect()
+  .scan(0) { counter, _ in counter + 1 }
+
+// 1
+let setupPublisher = { recorder in
+  source
+    // 2
+    .recordThread(using: recorder)
+    // 3
+    .receive(on: ImmediateScheduler.shared)
+    // 4
+    .receive(on: DispatchQueue.global())
+    .recordThread(using: recorder)
+    // 5
+    .eraseToAnyPublisher()
+}
+
+// 6
+let view = ThreadRecorderView(title: "Using ImmediateScheduler", setup: setupPublisher)
+PlaygroundPage.current.liveView = UIHostingController(rootView: view)
+
 
 //: [Next](@next)
 /*:

@@ -74,3 +74,154 @@ let subscription = computationPublisher
 
 Hiệu quả trong việc update lại giao diện. Vì mọi thứ liên quan tới giao diện đều ở Main Thread.
 
+## 12.3. Scheduler  implementations
+
+Phần này sẽ là các toán tử thực hiện công việc ngay lập tức. Đây cũng là cách sử dụng schedule đơn giản nhất.
+
+### Immediate Scheduler
+Bắt đầu phân tích ví dụ sau, vì phần này không có các toán tử cụ thể.
+
+Tạo 1 timer đếm thời gian, cứ 1 giây đếm 1 lần, thực chất là phát tín hiệu đi 1 lần.
+```swift
+let source = Timer
+ .publish(every: 1.0, on: .main, in: .common) 
+ .autoconnect()
+ .scan(0) { counter, _ in counter + 1 }
+```
+Xem tiếp code
+```swift
+let setupPublisher = { recorder in
+  source
+    // 2
+    .recordThread(using: recorder)
+    // 3
+    .receive(on: ImmediateScheduler.shared)
+    // 4
+    .receive(on: DispatchQueue.global())
+    .recordThread(using: recorder)
+    // 5
+    .eraseToAnyPublisher()
+}
+
+// 6
+let view = ThreadRecorderView(title: "Using ImmediateScheduler", setup: setupPublisher)
+PlaygroundPage.current.liveView = UIHostingController(rootView: view)
+```
+
+Trong đó:
+* `setupPublisher` là 1 publsiher
+* `recordThread` ghi lại thông tin của thread hiện tại --> cứ mỗi lần `source` phát ra, thì ghi lại 1 lần và biết thành publisher
+* Ta có các `receive` , với `ImmediateScheduler.shared` thì sẽ thực thi ngay trên Thread hiện tại. Nếu không có dòng `.receive(on: DispatchQueue.global())` toàn bộ sẽ được thực thi và nhận được Main Thread.
+
+Ví dụ trên cho bạn thấy như vậy, các hoạt động sẽ thực thi ngay lập tức với `ImmediateSchedule`. Nó phải sử dụng với publisher có không bao giờ lỗi (Never).
+
+Đối nghịch với nó là các toán tử delay hoặc thực thi ở 1 tương lai nào đó.
+
+### RunLoop
+
+Cũng khá  lâu rồi mới xuất hiện lại với RunLoop. Vì ngày nay các dev thường dùng `DispatchQueue` để thay thế việc xử lý các công việc với nhiều theard khác nhau. Bắt đầu với 1 ví dụ sau:
+
+```swift
+let source = Timer
+  .publish(every: 1.0, on: .main, in: .common)
+  .autoconnect()
+  .scan(0) { (counter, _) in counter + 1 }
+
+let setupPublisher = { recorder in
+    source
+        // 1
+        .receive(on: DispatchQueue.global())
+        .recordThread(using: recorder)
+        // 2
+        .receive(on: RunLoop.current)
+        .recordThread(using: recorder)
+        .eraseToAnyPublisher()
+}
+
+let view = ThreadRecorderView(title: "Using RunLoop", setup: setupPublisher)
+PlaygroundPage.current.liveView = UIHostingController(rootView: view)
+```
+
+Tương tự như trên, nhưng lần này tại các `receive` thì dùng khác nhau và `recordThread` lại. Trong đó:
+* `RunLoop.current` diễn ra trực tiếp trên Thread hiện tại. Có thể là Main Thread hoặc Thread nào đó.
+
+Thay đổi 1 chút, `.subscribe(on: DispatchQueue.global())` thay vì là `receive` thì lúc này bạn sẽ thấy `RunLoop.current` là cùng thread với publisher.
+
+### DispatchQueue scheduler
+
+Với 2 phần nhỏ trên, bạn sẽ để ý là không có các tham số custom đươc. Chúng ta buộc phải dùng một số giá trị đặc biệt. Phụ thuộc vào thread hiện tại mà đang thực hiện subscription. Với `Dispatch Queue` thì mọi thứ sẽ khác.
+
+#### Queue vs. Thread
+
+Bổ túc lại kiến thức một chút ở phần này.
+* `Queue` là hàng đợi mà chúng ta đẩy các công việc vào. Chúng sẽ thực thi theo tuần tự hay đồng thời, tuỳ thuộc vào cách setup. Tất cả các queue cùng 1 dispatch sẽ ở cùng 1 queue
+* `Thread` là luồng để thực thi các task hay các queue. Mỗi Thread có 1 DispatchQueue quản lý và chúng ta cũng không cần quan tâm nhiều tới thread trong Dispatch. Các phần việc ưu tiên, chạy như thế nào, share tài nguyên giữa các Thread đều đc Dispatch âm thầm giải quyết rồi.
+
+Xem code ví dụ sau
+
+```swift
+// Tạo 2 queue
+let serialQueue = DispatchQueue(label: "Serial queue")
+let sourceQueue = serialQueue //DispatchQueue.main
+
+// Tạo 1 publisher là `source`
+let source = PassthroughSubject<Void, Never>()
+
+// Tạo subscription bằng sourceQueue.schedule (lên lịch) --> mỗi giây thì source phát đi 1 tín hiệu (hàm void)
+let subscription = sourceQueue.schedule(after: sourceQueue.now, interval: .seconds(1)) {
+  source.send()
+}
+
+// Khá quen thuộc, chúng ta quan tâm tới việc nhận giá trị `serialQueue
+let setupPublisher = { recorder in
+    source
+        .recordThread(using: recorder)
+        .receive(on: serialQueue)
+        .recordThread(using: recorder)
+        .eraseToAnyPublisher()
+}
+
+let view = ThreadRecorderView(title: "Using DispatchQueue",
+                              setup: setupPublisher)
+PlaygroundPage.current.liveView = UIHostingController(rootView: view)
+```
+Mình cũng không hiểu ý nghĩa lắm. Nhưng nôm na thế này:
+* Định nghĩa 1 queue
+* Thao tác trên đó, tạo publisher và phát giá trị trên chính `queue` đó
+* Nhận lại ở 1 `queue` khác
+* Còn `subscription` có thể lại ở 1 queue nào đó.
+
+Khó hiểu phải không nào, nói chung thì giống như bạn code Non-Combine với DispatchQueue thôi. Còn giờ là subscribe ở đâu và receive ở đâu?
+
+Có thể thêm các options cho việc này, ví dụ:
+```swift
+.receive(on: serialQueue, options: DispatchQueue.SchedulerOptions(qos: .userInteractive) )
+```
+
+### Operation Queue
+
+Thành phần cuối và là cao cấp nhất. Đây là Class của hệ thống để thực thi các operations và quản lý chúng. Xem code ví dụ sau:
+
+```swift
+let queue = OperationQueue()
+queue.maxConcurrentOperationCount = 1
+
+let subscription = (1...10).publisher
+  .receive(on: queue)
+  .sink { value in
+    print("Received \(value) on thread \(Thread.current.number)")
+  }
+```
+
+Trong đó:
+* tạo ra 1 queue
+* Thực thi 1 subscription với việc phát 10 số từ 1 đến 10
+* Nhận kết quả ở 1 queue, chú ý thứ tự kết quả sẽ không phải từ 1 đến 10
+* tuy chỉnh để nhận ở 1 thread thực hiện 1 cái concurrent thôi, với thuộc tính `maxConcurrentOperationCount`
+
+Về bản chất thì xem như nó đóng gọi `DispatchQueue` với concurrent lại. Cũng không có nhiều tuỳ chọn ở đây. Khá là buồn phải không nào.
+
+Kết thúc phần này với một chút hụt hẫm, có thể là do thời gian tìm hiểu chưa nhiều và chưa thấy được các ứng dụng củ nó trong project.
+
+---
+## Hết

@@ -2,7 +2,30 @@ import Combine
 import SwiftUI
 import PlaygroundSupport
 
-<# Add code here #>
+// Tạo 2 queue
+let serialQueue = DispatchQueue(label: "Serial queue")
+let sourceQueue = serialQueue //DispatchQueue.main
+
+// Tạo 1 publisher là `source`
+let source = PassthroughSubject<Void, Never>()
+
+// Tạo subscription bằng sourceQueue.schedule (lên lịch) --> mỗi giây thì source phát đi 1 tín hiệu (hàm void)
+let subscription = sourceQueue.schedule(after: sourceQueue.now, interval: .seconds(1)) {
+  source.send()
+}
+
+// Khá quen thuộc, chúng ta quan tâm tới việc nhận giá trị `serialQueue
+let setupPublisher = { recorder in
+    source
+        .recordThread(using: recorder)
+        .receive(on: serialQueue)
+        .recordThread(using: recorder)
+        .eraseToAnyPublisher()
+}
+
+let view = ThreadRecorderView(title: "Using DispatchQueue",
+                              setup: setupPublisher)
+PlaygroundPage.current.liveView = UIHostingController(rootView: view)
 
 //: [Next](@next)
 /*:
