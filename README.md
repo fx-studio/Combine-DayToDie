@@ -37,6 +37,7 @@ Về repo này đơn giản chỉ là những gì note lại trong quá trình t
 10. [Combine vs. SwiftUI](./10_Combine_SwiftUI)
 11. [Error Handling](./11_Error_Handling)
 12. [Schedulers](./12_Schedulers)
+13. [Custom Publisher & Handling Backpressure](./13_Custom_Publishers)
 
 ### [Practices](./Practices)
 
