@@ -691,7 +691,7 @@ chạy ví dụ trên để hiểu kết quả nhận được từ việc Custo
 
 DONE phần mệt mỏi này :-(
 
-##13.6. Handling backpressure
+## 13.6. Handling backpressure
 
 Khi 1 dòng nước chảy, thì áp lực nước sẽ tác động tới các nơi nhận nước.  Vì dụ như cái van xả nc, luôn luôn chị 1 áp lức. Đúng như với Combine thì áp dụng nguyên tắc vật lý này vào thì các subscriber cũng phải chịu áp lực do các giá trị của publisher phát ra.
 
