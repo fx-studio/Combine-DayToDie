@@ -19,6 +19,7 @@
 		9E8DC1A323FB922000ED91C9 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8DC1A223FB922000ED91C9 /* BaseNavigationController.swift */; };
 		9E952D9323FB9A1100DA04AC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E952D9223FB9A1100DA04AC /* LoginViewModel.swift */; };
 		9E952D9623FBC12300DA04AC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E952D9523FBC12300DA04AC /* User.swift */; };
+		9E952D9923FBE20B00DA04AC /* UITextField.Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E952D9823FBE20B00DA04AC /* UITextField.Publisher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		9E8DC1A223FB922000ED91C9 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		9E952D9223FB9A1100DA04AC /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		9E952D9523FBC12300DA04AC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9E952D9823FBE20B00DA04AC /* UITextField.Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.Publisher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				9E8DC19023FB913A00ED91C9 /* AppDelegate */,
 				9E8DC19123FB914700ED91C9 /* Controllers */,
 				9E8DC19223FB915100ED91C9 /* Views */,
+				9E952D9723FBE1E600DA04AC /* Exts */,
 				9E8DC19323FB915C00ED91C9 /* Models */,
 				9E8DC19423FB917B00ED91C9 /* Resources */,
 				9E8DC18A23FB911600ED91C9 /* Info.plist */,
@@ -157,6 +160,14 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
+		9E952D9723FBE1E600DA04AC /* Exts */ = {
+			isa = PBXGroup;
+			children = (
+				9E952D9823FBE20B00DA04AC /* UITextField.Publisher.swift */,
+			);
+			path = Exts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -235,6 +246,7 @@
 				9E8DC17D23FB911500ED91C9 /* AppDelegate.swift in Sources */,
 				9E952D9623FBC12300DA04AC /* User.swift in Sources */,
 				9E8DC17F23FB911500ED91C9 /* SceneDelegate.swift in Sources */,
+				9E952D9923FBE20B00DA04AC /* UITextField.Publisher.swift in Sources */,
 				9E8DC19723FB919D00ED91C9 /* BaseViewController.swift in Sources */,
 				9E952D9323FB9A1100DA04AC /* LoginViewModel.swift in Sources */,
 			);

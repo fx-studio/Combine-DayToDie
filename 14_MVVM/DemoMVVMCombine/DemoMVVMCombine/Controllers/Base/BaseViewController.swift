@@ -18,12 +18,18 @@ class BaseViewController: UIViewController {
     super.viewDidLoad()
     setupData()
     setupUI()
+    bindingToView()
+    bindingToViewModel()
   }
   
   //MARK: - Configuration
   func setupData() { }
   
   func setupUI() { }
+  
+  func bindingToView() { }
+  
+  func bindingToViewModel() { }
   
   //MARK: - Navigation
   func alert(title: String, text: String?) -> AnyPublisher<Void, Never> {

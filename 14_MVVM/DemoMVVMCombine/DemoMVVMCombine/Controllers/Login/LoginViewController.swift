@@ -28,6 +28,7 @@ class LoginViewController: BaseViewController {
   }
   
   //MARK: - Config View
+  //MARK: Setup
   override func setupData() {
     super.setupData()
   }
@@ -41,7 +42,11 @@ class LoginViewController: BaseViewController {
     // Navigation Bar
     let clearBarButton = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clear))
     self.navigationItem.leftBarButtonItem = clearBarButton
-    
+
+  }
+  
+  //MARK: Binding
+  override func bindingToView() {
     // username
     viewModel.$username
       .assign(to: \.text, on: usernameTextField)
@@ -84,6 +89,18 @@ class LoginViewController: BaseViewController {
         }
         
     }.store(in: &subscriptions)
+  }
+  
+  override func bindingToViewModel() {
+    // usernameTextField
+    usernameTextField.publisher
+      .assign(to: \.username, on: viewModel)
+      .store(in: &subscriptions)
+    
+    // passwordTextField
+    passwordTextField.publisher
+      .assign(to: \.password, on: viewModel)
+      .store(in: &subscriptions)
     
   }
   
@@ -114,15 +131,4 @@ class LoginViewController: BaseViewController {
     viewModel.action.send(.clear)
   }
   
-}
-
-//MARK: - UITextFielđ Delegate
-extension LoginViewController: UITextFieldDelegate {
-  func textFieldDidEndEditing(_ textField: UITextField) {
-    if textField == usernameTextField {
-      viewModel.username = textField.text
-    } else if textField == passwordTextField {
-      viewModel.password = textField.text
-    }
-  }
 }
