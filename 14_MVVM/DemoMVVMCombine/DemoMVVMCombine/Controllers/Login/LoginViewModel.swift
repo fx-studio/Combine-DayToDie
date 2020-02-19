@@ -115,7 +115,7 @@ final class LoginViewModel {
     let test = username == "fxstudio" && password == "123456"
     
     let subject = CurrentValueSubject<Bool, Never>(test)
-    return subject.delay(for: .seconds(3), scheduler: DispatchQueue.main).eraseToAnyPublisher()
+    return subject.delay(for: .seconds(1), scheduler: DispatchQueue.main).eraseToAnyPublisher()
   }
   
   // Request without callback

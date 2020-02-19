@@ -13,7 +13,7 @@ class LoginViewController: BaseViewController {
   
   //MARK: - Properties
   // ViewModel
-  var viewModel = LoginViewModel()
+  var viewModel = LoginViewModel(user: .init(username: "fxstudio", password: "123456"))
     
   // Outlet
   @IBOutlet weak var usernameTextField: UITextField!
@@ -72,7 +72,23 @@ class LoginViewController: BaseViewController {
     viewModel.validatedText
       .assign(to: \.isEnabled, on: loginButton)
       .store(in: &subscriptions)
+  }
+  
+  override func bindingToViewModel() {
+    // usernameTextField
+    usernameTextField.publisher
+      .assign(to: \.username, on: viewModel)
+      .store(in: &subscriptions)
     
+    // passwordTextField
+    passwordTextField.publisher
+      .assign(to: \.password, on: viewModel)
+      .store(in: &subscriptions)
+    
+  }
+  
+  //MARK: Router
+  override func router() {
     // viewmodel State
     viewModel.state
       .sink { [weak self] state in
@@ -89,19 +105,6 @@ class LoginViewController: BaseViewController {
         }
         
     }.store(in: &subscriptions)
-  }
-  
-  override func bindingToViewModel() {
-    // usernameTextField
-    usernameTextField.publisher
-      .assign(to: \.username, on: viewModel)
-      .store(in: &subscriptions)
-    
-    // passwordTextField
-    passwordTextField.publisher
-      .assign(to: \.password, on: viewModel)
-      .store(in: &subscriptions)
-    
   }
   
   //MARK: - Actions

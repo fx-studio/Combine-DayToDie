@@ -20,6 +20,7 @@ class BaseViewController: UIViewController {
     setupUI()
     bindingToView()
     bindingToViewModel()
+    router()
   }
   
   //MARK: - Configuration
@@ -32,6 +33,9 @@ class BaseViewController: UIViewController {
   func bindingToViewModel() { }
   
   //MARK: - Navigation
+  func router() { }
+  
+  //MARK: - Publish functions
   func alert(title: String, text: String?) -> AnyPublisher<Void, Never> {
     let alertVC = UIAlertController(title: title, message: text, preferredStyle: .alert)
     
