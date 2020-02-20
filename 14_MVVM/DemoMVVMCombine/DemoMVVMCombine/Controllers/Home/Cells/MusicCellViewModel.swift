@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 final class MusicCellViewModel {
-  @Published var music: Music
+  var music: Music
   
   init(music: Music) {
     self.music = music

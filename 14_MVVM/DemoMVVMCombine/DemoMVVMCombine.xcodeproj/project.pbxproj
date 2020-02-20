@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E09602C23FE26FE004BD823 /* UIImageView.Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E09602B23FE26FE004BD823 /* UIImageView.Ext.swift */; };
+		9E09602E23FE2C65004BD823 /* API.Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E09602D23FE2C65004BD823 /* API.Downloader.swift */; };
 		9E8DC17D23FB911500ED91C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8DC17C23FB911500ED91C9 /* AppDelegate.swift */; };
 		9E8DC17F23FB911500ED91C9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8DC17E23FB911500ED91C9 /* SceneDelegate.swift */; };
 		9E8DC18623FB911600ED91C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E8DC18523FB911600ED91C9 /* Assets.xcassets */; };
@@ -31,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9E09602B23FE26FE004BD823 /* UIImageView.Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.Ext.swift; sourceTree = "<group>"; };
+		9E09602D23FE2C65004BD823 /* API.Downloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.Downloader.swift; sourceTree = "<group>"; };
 		9E8DC17923FB911500ED91C9 /* DemoMVVMCombine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoMVVMCombine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E8DC17C23FB911500ED91C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9E8DC17E23FB911500ED91C9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				9E952D9823FBE20B00DA04AC /* UITextField.Publisher.swift */,
+				9E09602B23FE26FE004BD823 /* UIImageView.Ext.swift */,
 			);
 			path = Exts;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 			children = (
 				9ED98DAB23FCF58F006A1042 /* API.swift */,
 				9ED98DB323FD1725006A1042 /* API.Request.swift */,
+				9E09602D23FE2C65004BD823 /* API.Downloader.swift */,
 				9ED98DAD23FD0F09006A1042 /* API.Music.swift */,
 			);
 			path = API;
@@ -291,9 +297,11 @@
 				9E952D9623FBC12300DA04AC /* User.swift in Sources */,
 				9E8DC17F23FB911500ED91C9 /* SceneDelegate.swift in Sources */,
 				9ED98DAE23FD0F09006A1042 /* API.Music.swift in Sources */,
+				9E09602E23FE2C65004BD823 /* API.Downloader.swift in Sources */,
 				9ED98DA423FCE10E006A1042 /* MusicCell.swift in Sources */,
 				9E952D9923FBE20B00DA04AC /* UITextField.Publisher.swift in Sources */,
 				9E8DC19723FB919D00ED91C9 /* BaseViewController.swift in Sources */,
+				9E09602C23FE26FE004BD823 /* UIImageView.Ext.swift in Sources */,
 				9ED98DB423FD1725006A1042 /* API.Request.swift in Sources */,
 				9E952D9323FB9A1100DA04AC /* LoginViewModel.swift in Sources */,
 				9ED98DA723FCE595006A1042 /* Music.swift in Sources */,

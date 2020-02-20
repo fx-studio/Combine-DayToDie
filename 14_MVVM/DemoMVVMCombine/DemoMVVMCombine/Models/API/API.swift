@@ -40,6 +40,9 @@ struct API {
     static let baseURL = "https://rss.itunes.apple.com/"
   }
   
+  //MARK: - Logic API
+  struct Downloader { }
+  
   //MARK: - Business API
   struct Music { }
 }

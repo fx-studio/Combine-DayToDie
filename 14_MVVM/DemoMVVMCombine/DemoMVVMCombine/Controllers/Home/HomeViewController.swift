@@ -17,6 +17,7 @@ class HomeViewController: BaseViewController {
   
   // Outlets
   @IBOutlet weak var tableView: UITableView!
+  var cellsSubscription: [IndexPath : AnyCancellable] = [:]
   
   //MARK: - Lifecycle
   override func viewDidLoad() {
@@ -56,10 +57,21 @@ class HomeViewController: BaseViewController {
       .debounce(for: .seconds(0.1), scheduler: DispatchQueue.main)
       .sink(receiveValue: { _ in
         print("binding table : \(self.viewModel.numberOfRows(in: 1))")
+        self.cellsSubscription.removeAll()
         self.tableView.reloadData()
+
       })
       .store(in: &subscriptions)
     
+    // cell
+    viewModel.state
+    .sink { [weak self] state in
+      if case .reloadCell(let indexPath) = state {
+        self?.tableView.reloadRows(at: [indexPath], with: .fade)
+      }
+      
+    }
+    .store(in: &subscriptions)
   }
   
   override func bindingToViewModel() {
@@ -82,6 +94,7 @@ class HomeViewController: BaseViewController {
   
   //MARK: - Private functions
   @objc func reset() {
+    cellsSubscription.removeAll()
     viewModel.action.send(.reset)
   }
   
@@ -103,11 +116,28 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     let vm = viewModel.musicCellViewModel(at: indexPath)
     cell.viewModel = vm
     
+    self.storeCellsCancellable(indexPath: indexPath, cell: cell)
+    
     return cell
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+  }
+  
+  func storeCellsCancellable(indexPath: IndexPath, cell: MusicCell) {
+   
+    if !cellsSubscription.keys.contains(indexPath) {
+      print("Cell subcriber total: \(cellsSubscription.count)")
+      
+      let cancellable = cell.downloadPublisher
+        .debounce(for: 0.1, scheduler: DispatchQueue.main)
+        .sink { [weak self] _ in
+          self?.viewModel.action.send(.downloadImage(indexPath: indexPath))
+      }
+      
+      cellsSubscription[indexPath] = cancellable
+    }
   }
   
 }

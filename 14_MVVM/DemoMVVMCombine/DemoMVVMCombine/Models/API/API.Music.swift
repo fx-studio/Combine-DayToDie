@@ -25,10 +25,10 @@ extension API.Music {
     }
   }
   
-  struct MusicResponse: Codable {
+  struct MusicResponse: Decodable {
     var feed: MusicResults
     
-    struct MusicResults: Codable {
+    struct MusicResults: Decodable {
       var results: [Music]
       var updated: String
     }

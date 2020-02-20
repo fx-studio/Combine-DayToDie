@@ -17,12 +17,14 @@ final class HomeViewModel {
     case initial
     case fetched
     case error(message: String)
+    case reloadCell(indexPath: IndexPath)
   }
   
   // Action
   enum Action {
     case fetchData
     case reset
+    case downloadImage(indexPath: IndexPath)
   }
   
   //MARK: - Properties
@@ -62,10 +64,15 @@ final class HomeViewModel {
     case .fetchData:
       print("ViewModel -> Action: FetchData")
       fetchData()
+      
     case .reset:
       print("ViewModel -> Action: Reset")
       musics = []
       fetchData()
+      
+    case .downloadImage(let indexPath):
+      print("ViewModel -> Action: Download at \(indexPath.row)")
+      downloadImage(indexPath: indexPath)
     }
   }
     
@@ -82,6 +89,9 @@ final class HomeViewModel {
       
     case .error(let message):
       print("ViewModel -> State: error : \(message)")
+      
+    case .reloadCell(let indexPath):
+      print("ViewModel -> State: reload cell : \(indexPath.row)")
       
     }
   }
@@ -115,6 +125,22 @@ final class HomeViewModel {
         self.musics = results
       }
       .store(in: &musicsCancellable)
+  }
+  
+  func downloadImage(indexPath: IndexPath) {
+    if indexPath.row < musics.count {
+      let item = musics[indexPath.row]
+      
+      _ = API.Downloader.image(urlString: item.artworkUrl100)
+        .replaceError(with: nil)
+        .sink(receiveValue: { image in
+          
+          item.thumbnailImage = image
+          
+          self.state.send(.reloadCell(indexPath: indexPath))
+
+        })
+    }
   }
     
 }

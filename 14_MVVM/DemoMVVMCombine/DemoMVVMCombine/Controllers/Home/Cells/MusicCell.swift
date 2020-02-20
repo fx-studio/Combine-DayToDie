@@ -23,23 +23,31 @@ class MusicCell: UITableViewCell {
       self.bindingToView()
     }
   }
+
+  // publisher
+  var downloadPublisher = PassthroughSubject<Void, Never>()
   
-  var subscriptions = [AnyCancellable]()
-    
   //MARK: - Lifecycle
   override func awakeFromNib() {
     super.awakeFromNib()
   }
   
-  func bindingToView() {    
-    subscriptions = []
+  func bindingToView() {
     
-    viewModel?.$music
-      .sink { music in
-        self.nameLabel.text = music.name
-        self.artistNameLabel.text = music.artistName
+    self.nameLabel.text = viewModel?.music.name
+    self.artistNameLabel.text = viewModel?.music.artistName
+    
+    if let image = viewModel?.music.thumbnailImage {
+      self.thumbnailImageView.image = image
+    } else {
+      self.thumbnailImageView.image = nil
+            
+      // publisher
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+        self.downloadPublisher.send()
+      })
+      
     }
-    .store(in: &subscriptions)
     
   }
   
