@@ -20,13 +20,33 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    //title
+    title = "HOME"
+    
+    //navigation
+    let saveBarButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(save))
+    self.navigationItem.leftBarButtonItem = saveBarButton
+    
+    //subscription
     countPublisher
-      .handleEvents(receiveOutput: { [weak self] value in
-        self?.view.backgroundColor = (value % 2 == 0) ? UIColor.white : UIColor.lightGray
+      .handleEvents(receiveSubscription: { subscription in
+        print(subscription)
+      }, receiveOutput: { (value) in
+        print(value)
+      }, receiveCompletion: { (completion) in
+        print(completion)
+      }, receiveCancel: {
+        print("Cancel")
+      }, receiveRequest: { (request) in
+        print(request.hashValue)
       })
       .map { "\($0)"}
       .assign(to: \.text, on: self.counterLabel)
       .store(in: &subscriptions)
+    
+    // load count
+    let temp = DataManagement.share.load()["count"] ?? 0
+    countPublisher.send(temp)
     
   }
   
@@ -36,7 +56,23 @@ class HomeViewController: UIViewController {
   }
   
   @IBAction func reduce(_ sender: Any) {
-    countPublisher.value += 1
+    countPublisher.value -= 1
+  }
+  
+  @objc func save() {
+    DataManagement.share.save(value: self.countPublisher.value)
+      .sink(receiveCompletion: { [unowned self] completion in
+        if case .failure(let error) = completion {
+          print(error.localizedDescription)
+        }
+        
+        
+      }) { [unowned self] id in
+        print("SAVED SUCCESS!")
+        
+      }
+      .store(in: &subscriptions)
+    
   }
   
   
