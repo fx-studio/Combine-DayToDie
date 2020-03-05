@@ -27,6 +27,9 @@ class HomeViewController: UIViewController {
     let saveBarButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(save))
     self.navigationItem.leftBarButtonItem = saveBarButton
     
+    let settingsBarButton = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(gotoSettingsVC))
+    self.navigationItem.rightBarButtonItem = settingsBarButton
+    
     //subscription
     countPublisher
       .handleEvents(receiveSubscription: { subscription in
@@ -63,17 +66,67 @@ class HomeViewController: UIViewController {
     DataManagement.share.save(value: self.countPublisher.value)
       .sink(receiveCompletion: { [unowned self] completion in
         if case .failure(let error) = completion {
-          print(error.localizedDescription)
+          self.alert(title: "Error", text: error.localizedDescription)
+            .sink { _ in
+              // tự sướng trong này
+          }
+          .store(in: &self.subscriptions)
         }
         
         
       }) { [unowned self] id in
         print("SAVED SUCCESS!")
-        
+        self.alert(title: "HOME", text: "SAVED SUCCESS!").sink { _ in }.store(in: &self.subscriptions)
       }
       .store(in: &subscriptions)
     
   }
   
+  @objc func gotoSettingsVC() {
+    // vc
+    let settingsVC = SettingsViewController()
+    settingsVC.count = countPublisher.value
+    
+//    // publisher
+//    let publisher = settingsVC.countPublisher.share()
+//
+//    // subscription 2
+//    publisher
+//      .sink { value in
+//        self.countPublisher.value = value
+//    }
+//    .store(in: &subscriptions)
+//
+//    // subscription 2
+//    publisher
+//      .map { "\($0)" }
+//      .assign(to: \.text, on: self.counterLabel)
+//      .store(in: &subscriptions)
+    
+    settingsVC.$count
+      .sink { value in
+        self.countPublisher.value = value
+    }.store(in: &subscriptions)
+    
+    
+    // push
+    self.navigationController?.pushViewController(settingsVC, animated: true)
+  }
+  
+  func alert(title: String, text: String?) -> AnyPublisher<Void, Never> {
+    let alertVC = UIAlertController(title: title, message: text, preferredStyle: .alert)
+    
+    return Future { resolve in
+      alertVC.addAction(UIAlertAction(title: "Close", style: .default, handler: { _ in
+        resolve(.success(()))
+      }))
+      
+      self.present(alertVC, animated: true, completion: nil)
+    }
+    .handleEvents(receiveCancel: {
+      self.dismiss(animated: true, completion: nil)
+    })
+    .eraseToAnyPublisher()
+  }
   
 }
