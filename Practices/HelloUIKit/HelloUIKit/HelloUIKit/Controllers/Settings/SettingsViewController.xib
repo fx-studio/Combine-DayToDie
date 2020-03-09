@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingsViewController" customModule="HelloUIKit" customModuleProvider="target">
             <connections>
                 <outlet property="countTexyField" destination="CG6-MB-Cop" id="2Fd-go-U1n"/>
+                <outlet property="doneButton" destination="pbg-Z1-PSC" id="T5Z-tD-GrM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,8 +34,16 @@
                         <constraint firstAttribute="height" constant="45" id="guI-E2-6Fe"/>
                         <constraint firstAttribute="width" constant="380" id="u8h-bc-cVa"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                    <state key="normal" title="Done"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                    <state key="normal" title="Done">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <state key="disabled">
+                        <color key="titleColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="font" scale="medium" weight="light">
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        </preferredSymbolConfiguration>
+                    </state>
                     <connections>
                         <action selector="done:" destination="-1" eventType="touchUpInside" id="evw-eR-fc7"/>
                     </connections>

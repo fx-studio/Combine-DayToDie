@@ -85,7 +85,7 @@ class HomeViewController: UIViewController {
   @objc func gotoSettingsVC() {
     // vc
     let settingsVC = SettingsViewController()
-    settingsVC.count = countPublisher.value
+//    settingsVC.count = countPublisher.value
     
 //    // publisher
 //    let publisher = settingsVC.countPublisher.share()

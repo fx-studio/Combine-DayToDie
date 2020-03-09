@@ -12,6 +12,7 @@
 		9E19159B23D04C2700A099C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E19159A23D04C2700A099C2 /* Assets.xcassets */; };
 		9E19159E23D04C2700A099C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E19159C23D04C2700A099C2 /* LaunchScreen.storyboard */; };
 		9E3579A1240F931E007DBAC7 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3579A0240F931E007DBAC7 /* DataManager.swift */; };
+		9E7A57642415F0AE0060772A /* UITextField.Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7A57632415F0AE0060772A /* UITextField.Publisher.swift */; };
 		9E864CCC2410A2DE001B801C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E864CCA2410A2DE001B801C /* SettingsViewController.swift */; };
 		9E864CCD2410A2DE001B801C /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E864CCB2410A2DE001B801C /* SettingsViewController.xib */; };
 		9EA82DDD240E52BF00D6CA4A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA82DDB240E52BF00D6CA4A /* HomeViewController.swift */; };
@@ -26,6 +27,7 @@
 		9E19159D23D04C2700A099C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9E19159F23D04C2700A099C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9E3579A0240F931E007DBAC7 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		9E7A57632415F0AE0060772A /* UITextField.Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.Publisher.swift; sourceTree = "<group>"; };
 		9E864CCA2410A2DE001B801C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9E864CCB2410A2DE001B801C /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		9EA82DDB240E52BF00D6CA4A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				9E3579A0240F931E007DBAC7 /* DataManager.swift */,
+				9E7A57632415F0AE0060772A /* UITextField.Publisher.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				9E19159223D04C2400A099C2 /* AppDelegate.swift in Sources */,
 				9E3579A1240F931E007DBAC7 /* DataManager.swift in Sources */,
 				9E19159423D04C2400A099C2 /* SceneDelegate.swift in Sources */,
+				9E7A57642415F0AE0060772A /* UITextField.Publisher.swift in Sources */,
 				9E864CCC2410A2DE001B801C /* SettingsViewController.swift in Sources */,
 				9EA82DDD240E52BF00D6CA4A /* HomeViewController.swift in Sources */,
 			);
